@@ -8,7 +8,7 @@ from adventuremessages import *
 LOBBY = 0
 
 
-class AdventureProtocol(ServerProtocol):
+class AdventureServerProtocol(ServerProtocol):
     def connectionMade(self):
         ServerProtocol.connectionMade(self)
 
@@ -87,7 +87,7 @@ def main():
     parser = argparse.ArgumentParser(description='Game Server')
     parser.add_argument('-p', '--port', default=10000, type=int, help='Port to run the server on.')
     args = parser.parse_args()
-    server_app = GameServerApp(args.port, AdventureProtocol, AdventureGame)
+    server_app = GameServerApp(args.port, AdventureServerProtocol, AdventureGame)
     server_app.run(1.0/30)
 
 if __name__ == '__main__':

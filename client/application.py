@@ -1,21 +1,21 @@
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import reactor
-from protocol import ClientProtocol
 from shared.player import Player
 
 
 class GameClientFactory(ClientFactory):
-    def __init__(self, app):
+    def __init__(self, app, protocol_class):
         self.app = app
+        self.protocolClass = protocol_class
 
     def buildProtocol(self, address):
-        return ClientProtocol(self.app)
+        return self.protocolClass(self.app)
 
 
 class GenericClient:
-    def __init__(self, client_factory_class, player_name):
-        self.clientFactoryClass = client_factory_class
-        self.playerName = player_name
+    def __init__(self, client_protocol_class):
+        self.clientFactory = GameClientFactory(self, client_protocol_class)
+        self.playerName = None
         self.gameNames = []
         self.player = None
         self.currentGame = None
@@ -30,9 +30,10 @@ class GenericClient:
         self.request_login()
         return self.player
 
-    def connect(self, hostname, port):
-        reactor.connectTCP(hostname, port, self.clientFactoryClass(self))
+    def connect(self, hostname, port, player_name):
+        reactor.connectTCP(hostname, port, self.clientFactory)
         reactor.running = True
+        self.playerName = player_name
 
     def server_set_game_list(self, game_names):
         self.gameNames = game_names
