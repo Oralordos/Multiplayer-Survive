@@ -7,6 +7,6 @@ class Player:
     def destroy(self):
         self.protocol = None
 
-    def set_error(self, id, msg):
-        self.protocol.error_id = id
+    def set_error(self, id_num, msg):
+        self.protocol.error_id = id_num
         self.protocol.error_msg = msg

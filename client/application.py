@@ -1,5 +1,3 @@
-import random
-
 from twisted.internet.protocol import ClientFactory
 from twisted.internet import reactor
 from protocol import ClientProtocol
@@ -15,9 +13,9 @@ class GameClientFactory(ClientFactory):
 
 
 class GenericClient:
-    def __init__(self, client_factory_class):
+    def __init__(self, client_factory_class, player_name):
         self.clientFactoryClass = client_factory_class
-        self.playerName = 'Player{0}'.format(random.randint(0, 1000))
+        self.playerName = player_name
         self.gameNames = []
         self.player = None
         self.currentGame = None
